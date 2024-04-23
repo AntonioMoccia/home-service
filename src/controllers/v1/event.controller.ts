@@ -17,6 +17,8 @@ export const eventController = {
           latitude: event.location.latitude,
           longitude: event.location.longitude,
         },
+        from:event.from,
+        to:event.to
       });
       res.json(newEvent);
     } catch (error) {

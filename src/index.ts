@@ -10,8 +10,8 @@ import {
   StrategyOptionsWithoutRequest,
 } from "passport-jwt";
 import UserService from "@services/v1/user.service";
-import { authRouter } from "@routes/v1/auth.route";
-import { eventRouter } from "@routes/v1/event.route";
+import v1 from "@routes/v1";
+
 
 new MongoDb()
   .init()
@@ -45,9 +45,8 @@ new MongoDb()
 
     app.use(express.json());
 
-    app.use("/v1/auth", authRouter);
-    app.use("/v1/users", userRouter);
-    app.use("/v1/events", eventRouter);
+    app.use("/v1/api", v1);
+
 
     app.listen(5000, () => {
       console.log(`http://localhost:5000`);

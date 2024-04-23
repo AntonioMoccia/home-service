@@ -16,6 +16,8 @@ export interface IEvent {
   city: string;
   type: EventType;
   location: GeoLocation;
+  from:Date;
+  to:Date
 }
 
 
@@ -43,7 +45,16 @@ const eventSchema = new mongoose.Schema<IEvent>(
     location:{
         type: mongoose.SchemaTypes.Mixed,
         required: true,
-    }
+    },
+    from:{
+      type:mongoose.SchemaTypes.Date,
+      required:true,
+    },
+    to:{
+      type:mongoose.SchemaTypes.Date,
+      required:true,
+    },
+
   },
   {
     timestamps: true,
