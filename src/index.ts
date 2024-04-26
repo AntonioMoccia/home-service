@@ -2,7 +2,8 @@ import { config } from "dotenv";
 config();
 import express, { Application, NextFunction, Request, Response } from "express";
 import MongoDb from "@services/v1/mongo.service";
-import { userRouter } from "@routes/v1/user.route";
+import cors from 'cors'
+
 import passport from "passport";
 import {
   ExtractJwt,
@@ -19,7 +20,8 @@ new MongoDb()
     console.log(res);
 
     const app: Application = express();
-
+    app.use(cors())
+    app.use(express.json());
     const opts: StrategyOptionsWithoutRequest = {
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: process.env.JWT_SECRET as string,
@@ -43,7 +45,6 @@ new MongoDb()
       })
     );
 
-    app.use(express.json());
 
     app.use("/v1/api", v1);
 

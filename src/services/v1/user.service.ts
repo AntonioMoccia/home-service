@@ -1,18 +1,23 @@
 import { UserModel } from "@models/users.model";
 
-  interface userCreateDTO{
-    email:string,
-    username:string,
-    password:string
+interface userCreateDTO {
+  email: string,
+  username: string,
+  password: string
 
-  }
+}
+interface passwordUpdateDTO {
+  userId: string,
+  password: string
+
+}
 
 class User {
-  constructor() {}
+  constructor() { }
 
-  async create({email,username,password}:userCreateDTO) {
+  async create({ email, username, password }: userCreateDTO) {
     try {
-      
+
       const newUserInstance = new UserModel({
         email,
         password,
@@ -38,6 +43,16 @@ class User {
     const users = await UserModel.find();
     return users;
   }
+  async updatePassword(userDTO:passwordUpdateDTO) {
+    try {
+      const user = await UserModel.findByIdAndUpdate(userDTO.userId, {
+        password:userDTO.password
+      })
+      return user
+    } catch (error) {
+      throw new Error("Qualcosa è andato storto");
+    }
+  }
 
   async findByUsername(username: string) {
     const user = await UserModel.findOne({ username });
@@ -46,7 +61,7 @@ class User {
   async findByEmail(email: string) {
     const user = await UserModel.findOne({ email });
     console.log(user);
-    
+
     return user;
   }
 }

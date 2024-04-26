@@ -12,7 +12,8 @@ class Auth {
     const hashedPassword = await this.hashPassword(user.password);
     try {
       const newUser = await userService.create({
-        ...user,
+        email: user.email,
+        username: user.username,
         password: hashedPassword,
       });
       return newUser;
@@ -22,6 +23,20 @@ class Auth {
       );
     }
   }
+  async updatePassword(userId: string, password: string) {
+    const userService = new UserService();
+    
+    const hashedPassword = await this.hashPassword(password);
+    const newUser = await userService.updatePassword({ userId, password:hashedPassword });
+    console.log(newUser,'usr');
+    
+    return newUser;
+  } catch(error: any) {
+    throw new Error(
+      "Qualcosa è andato storto nella modifica della password"
+    );
+  }
+
   async hashPassword(password: string) {
     const hashedPassword = await bcrypt.hash(password, 10);
     return hashedPassword;
