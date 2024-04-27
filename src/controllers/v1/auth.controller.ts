@@ -28,14 +28,15 @@ export const authController = {
   },
   login: async (req: Request, res: Response) => {
     try {
-      const { username, password } = req.body;
+      const { email, password } = req.body;
 
-      const user = await userService.findByUsername(username);
-
+      const user = await userService.findByEmail(email);
+      console.log();
+      
       if (!user) {
         return res
           .status(400)
-          .json({ message: "Invalid username or password" });
+          .json({ message: "Invalid email or password" });
       }
 
       const passwordMatch = await bcrypt.compare(password, user?.password);
@@ -43,7 +44,7 @@ export const authController = {
       if (!passwordMatch) {
         return res
           .status(400)
-          .json({ message: "Invalid username or password" });
+          .json({ message: "Invalid email or password" });
       }
 
       const token = jwt.sign({ username: user.username }, process.env.JWT_SECRET as string, {
@@ -93,10 +94,6 @@ export const authController = {
       userId,
       token
     } = req.body
-console.log(    'hxhgfxjghfgxgfx',  password,
-  confirmPassword,
-  userId,
-  token);
 
     const user = await userService.findById(userId)
     const JWT_SECRET = process.env.JWT_SECRET! + user?.password
@@ -127,5 +124,18 @@ console.log(    'hxhgfxjghfgxgfx',  password,
       })
     }
 
+  },
+  verifyUsername: async (req: Request, res: Response) => {
+    const exist = await authService.checkUsernameExist(req.body.username)
+
+    if (exist) {
+      res.json({
+        isValid: false
+      })
+    } else {
+      res.json({
+        isValid: true
+      })
+    }
   }
 };

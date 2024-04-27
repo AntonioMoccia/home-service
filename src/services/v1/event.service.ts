@@ -9,6 +9,8 @@ class Event{
             description:event.description,
             name:event.name,
             type:event.type,
+            from:event.from,
+            to:event.to,
             location:{
                 latitude:event.location.latitude,
                 longitude:event.location.longitude
@@ -16,6 +18,7 @@ class Event{
         })
         return newEvent
        } catch (error) {
+               
         throw new Error(`qualcosa è andato storto durante la creazione dell\'evento ${event.name}`)
        }
     }

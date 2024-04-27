@@ -60,7 +60,6 @@ class User {
   }
   async findByEmail(email: string) {
     const user = await UserModel.findOne({ email });
-    console.log(user);
 
     return user;
   }

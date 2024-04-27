@@ -28,7 +28,6 @@ class Auth {
     
     const hashedPassword = await this.hashPassword(password);
     const newUser = await userService.updatePassword({ userId, password:hashedPassword });
-    console.log(newUser,'usr');
     
     return newUser;
   } catch(error: any) {
@@ -37,6 +36,22 @@ class Auth {
     );
   }
 
+  /**
+   * 
+   * @param username 
+   * @returns true if username exist 
+   */
+  async checkUsernameExist(username:string){
+    const userService = new UserService()
+    const user = await userService.findByUsername(username)
+
+    if(user){
+      return true
+    }else{
+      return false
+    }
+
+  }
   async hashPassword(password: string) {
     const hashedPassword = await bcrypt.hash(password, 10);
     return hashedPassword;
