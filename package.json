@@ -7,7 +7,12 @@
     "build": "tsc && tsc-alias",
     "build:watch": "concurrently --kill-others \"tsc -w\" \"tsc-alias -w\" \"nodemon ./dist/index.js\"",
     "dev": "ts-node-dev --respawn -r tsconfig-paths/register ./src/index.ts",
-    "start": "ts-node -r tsconfig-paths/register src/index.ts"
+    "start": "ts-node -r tsconfig-paths/register src/index.ts",
+    "typeorm": "ts-node -r tsconfig-paths/register node_modules/.bin/typeorm",
+    "migration:up": "ts-node -r tsconfig-paths/register --project ./tsconfig.json ./node_modules/.bin/typeorm migration:run -d config/migration.config.ts",
+    "migration:generate": "ts-node -r tsconfig-paths/register --project ./tsconfig.json ./node_modules/.bin/typeorm migration:generate -d config/migration.config.ts",
+    "migration:down": "ts-node -r tsconfig-paths/register --project ./tsconfig.json ./node_modules/.bin/typeorm migration:revert -d config/migration.config.ts"
+  
   },
   "keywords": [],
   "author": "",
@@ -24,10 +29,13 @@
     "nodemailer": "^6.9.13",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
-    "pg": "^8.11.5",
+    "pg": "^8.13.1",
     "pg-hstore": "^2.3.4",
+    "reflect-metadata": "^0.2.2",
     "sequelize": "^6.37.3",
-    "typescript": "^5.4.5"
+    "typeorm": "^0.3.20",
+    "typescript": "^5.4.5",
+    "yargs": "^17.7.2"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
@@ -36,10 +44,11 @@
     "@types/jsonwebtoken": "^9.0.6",
     "@types/mongoose": "^5.11.97",
     "@types/mssql": "^9.1.5",
-    "@types/node": "^20.12.7",
+    "@types/node": "^20.17.2",
     "@types/passport": "^1.0.16",
     "@types/passport-jwt": "^4.0.1",
     "@types/pg": "^8.11.5",
+    "@types/yargs": "^17.0.33",
     "dotenv": "^16.4.5",
     "lodash": "^4.17.21",
     "nodemon": "^3.1.0",

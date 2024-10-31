@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { UserModel } from "@models/users.model";
-import { Models } from "@types";
+import { UserModel } from "@v1/models/users.model";
+import { Models } from "@v1/types";
 
 const models = {
     UserModel

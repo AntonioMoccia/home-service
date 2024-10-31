@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import UserService from "@services/v1/user.service";
+import UserService from "@v1/services/user.service";
 interface IRegisterUser {
   username: string;
   email: string;
@@ -9,7 +9,13 @@ interface IRegisterUser {
 class Auth {
   async register(user: IRegisterUser) {
     const userService = new UserService();
+    const emailExist = await this.checkEmailExist(user.email)
+    if(emailExist){
+      throw new Error(`l'utente ${user.email} gia esiste nel database`)
+    }
+
     const hashedPassword = await this.hashPassword(user.password);
+   
     try {
       const newUser = await userService.create({
         email: user.email,
@@ -25,15 +31,17 @@ class Auth {
   }
   async updatePassword(userId: string, password: string) {
     const userService = new UserService();
-    
-    const hashedPassword = await this.hashPassword(password);
-    const newUser = await userService.updatePassword({ userId, password:hashedPassword });
-    
-    return newUser;
-  } catch(error: any) {
-    throw new Error(
-      "Qualcosa è andato storto nella modifica della password"
-    );
+
+    try {
+      const hashedPassword = await this.hashPassword(password);
+      const newUser = await userService.updatePassword({ userId, password: hashedPassword });
+
+      return newUser;
+    } catch (error: any) {
+      throw new Error(
+        "Qualcosa è andato storto nella modifica della password"
+      );
+    }
   }
 
   /**
@@ -41,13 +49,24 @@ class Auth {
    * @param username 
    * @returns true if username exist 
    */
-  async checkUsernameExist(username:string){
+  async checkUsernameExist(username: string) {
     const userService = new UserService()
     const user = await userService.findByUsername(username)
 
-    if(user){
+    if (user) {
       return true
-    }else{
+    } else {
+      return false
+    }
+
+  }
+  async checkEmailExist(email: string) {
+    const userService = new UserService()
+    const user = await userService.findByEmail(email)
+
+    if (user) {
+      return true
+    } else {
       return false
     }
 

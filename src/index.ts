@@ -1,7 +1,7 @@
 import { config } from "dotenv";
 config();
-import express, { Application, NextFunction, Request, Response } from "express";
-import MongoDb from "@services/v1/mongo.service";
+import express, { Application } from "express";
+
 import cors from 'cors'
 
 import passport from "passport";
@@ -10,15 +10,16 @@ import {
   Strategy as JwtStrategy,
   StrategyOptionsWithoutRequest,
 } from "passport-jwt";
-import UserService from "@services/v1/user.service";
-import v1 from "@routes/v1";
+import UserService from "@v1/services/user.service";
+import v1 from "@v1/routes";
+import dataSource from "@v1/config/db";
 
 
-new MongoDb()
-  .init()
-  .then((res) => {
-    console.log(res);
 
+dataSource.initialize().then(() => {
+  console.log('connected database connection')
+  dataSource.synchronize().then(() => {
+    console.log('synchronized database connection')
     const app: Application = express();
     app.use(cors())
     app.use(express.json());
@@ -53,6 +54,6 @@ new MongoDb()
       console.log(`http://localhost:5000`);
     });
   })
-  .catch((e) => {
-    console.log(e);
-  });
+})
+
+

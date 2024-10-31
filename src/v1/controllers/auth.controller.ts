@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
-import UserService from "@services/v1/user.service";
-import AuthService from '@services/v1/auth.service'
+import UserService from "@v1/services/user.service";
+import AuthService from '@v1/services/auth.service'
 import jwt, { JwtPayload } from "jsonwebtoken";
-
 
 const userService = new UserService();
 const authService = new AuthService()
@@ -19,11 +18,10 @@ export const authController = {
         email
       })
 
-      res
-        .status(201)
+      res.status(201)
         .json({ message: "User registered successfully", user: newUser });
     } catch (e) {
-      //console.log(e.message);
+      if (e instanceof Error) return res.status(400).json({ message: e.message })
     }
   },
   login: async (req: Request, res: Response) => {
@@ -31,8 +29,8 @@ export const authController = {
       const { email, password } = req.body;
 
       const user = await userService.findByEmail(email);
-      console.log();
-      
+      console.log('login');
+
       if (!user) {
         return res
           .status(400)
@@ -71,17 +69,16 @@ export const authController = {
 
 
     if (!user) {
-      res.status(404).json({
+      return res.status(404).json({
         message: "non esistono utenti con questa mail"
       })
-      return
     }
 
 
     const JWT_SECRET = process.env.JWT_SECRET! + user?.password
-    const token = jwt.sign({ userId: user?._id }, JWT_SECRET, { expiresIn: "2m" });
-
-    console.log(`http://localhost:5173/reset-password/${user._id}/${token}`)
+    const token = jwt.sign({ userId: user?.id }, JWT_SECRET, { expiresIn: "2m" });
+    //link del frontend
+    console.log(`http://localhost:5173/reset-password/${user.id}/${token}`)
 
     res.status(200).json({
       message: "email sended succesfully"

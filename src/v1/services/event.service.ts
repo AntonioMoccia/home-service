@@ -1,4 +1,4 @@
-import {EventModel,IEvent} from '@models/events.models'
+import {EventModel,IEvent} from '@v1/models/events.models'
 
 class Event{
     async create(event:IEvent){
