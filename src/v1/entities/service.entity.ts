@@ -11,25 +11,28 @@ class ServiceEntity {
     @ManyToOne(()=>User,(user)=>user.id)
     worker:User
     @Column()
-    title: string
+    title: string //titolo del servizio
 
     @Column()
-    description: string
+    description: string //descrizione del servizio
 
     @Column({ type: 'decimal' })
-    base_price: number
+    base_price: number //prezzo base del servizio, (costo orario)
 
     @Column()
-    unit: string
+    unit: string //unità di prezzo es. ora,pezzo,servizio,giorno
 
     @Column()
-    is_free_quote: boolean
-
-    @Column()
-    deposit_required: boolean
+    is_free_quote: boolean //preventivo
 
     @Column({ type: 'decimal' })
-    deposit_amount: number
+    quote_price:number //prezzo del preventivo
+
+    @Column()
+    deposit_required: boolean //se è richiesto un acconto
+
+    @Column({ type: 'decimal' })
+    deposit_amount: number //prezzo dell'acconto
 }
 
 export default ServiceEntity

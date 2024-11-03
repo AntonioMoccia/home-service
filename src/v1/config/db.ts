@@ -12,7 +12,7 @@ const dataSource =  new DataSource({
     password: String(process.env.POSTGRES_PASSWORD),
     database: process.env.POSTGRES_DATABASE,
     synchronize: false,
-    logging: true,
+    logging: false,
     entities: [User,ServiceEntity],
     subscribers: [],
     migrations: [__dirname+'/../migrations/*.ts'],
