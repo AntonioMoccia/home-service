@@ -6,7 +6,7 @@ import { User } from "./user.entity";
 class ServiceEntity {
 
     @PrimaryGeneratedColumn('uuid')
-    service_id: string
+    id_service: string
 
     @ManyToOne(()=>User,(user)=>user.id)
     worker:User
