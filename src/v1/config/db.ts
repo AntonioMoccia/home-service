@@ -2,7 +2,7 @@ import { config } from 'dotenv'
 config()
 import { User } from "../entities/user.entity"
 import { DataSource } from "typeorm"
-import ServiceEntity from '../entities/service.entity'
+import Job from '../entities/job.entity'
 
 const dataSource =  new DataSource({
     type: "postgres",
@@ -13,7 +13,7 @@ const dataSource =  new DataSource({
     database: process.env.POSTGRES_DATABASE,
     synchronize: false,
     logging: false,
-    entities: [User,ServiceEntity],
+    entities: [User,Job],
     subscribers: [],
     migrations: [__dirname+'/../migrations/*.ts'],
     dropSchema:false,

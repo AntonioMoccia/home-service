@@ -18,9 +18,9 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) => {
         }
 
         const jwtDecoded = <{ userId: string }>decoded
-
-        req.user = jwtDecoded.userId
-
+       
+        req.user = { userId:jwtDecoded.userId }
+ 
         next();
     });
 };

@@ -28,7 +28,9 @@ redisClient.connect().catch(console.error)
 
 declare module "express-serve-static-core" {
   export interface Request {
-    user: any;
+    user: {
+      userId: string | undefined
+    };
   }
 }
 dataSource.initialize().then(() => {
