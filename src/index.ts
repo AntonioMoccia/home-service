@@ -52,7 +52,6 @@ dataSource.initialize().then(() => {
 
     app.use("/v1/api", v1);
 
-
     app.listen(5000, () => {
       console.log(`http://localhost:5000`);
     });

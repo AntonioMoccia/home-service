@@ -9,3 +9,4 @@ userRouter.get("/", userControllerV1.getAllUsers);
 userRouter.post('/', userControllerV1.createUser)
 userRouter.get("/username", userControllerV1.getByUsername);
 userRouter.patch('/:userId', verifyToken, userControllerV1.update)
+userRouter.patch('/:userId/jobs', verifyToken, userControllerV1.getJobsByUserID)

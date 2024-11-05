@@ -70,22 +70,5 @@ export const jobControllerV1 = {
         res.json({
             update
         })
-    },
-    getJobsByUserID: async (req: Request, res: Response) => {
-        try {
-            if (!req.params.userId) {
-                return res.json({
-                    success: false,
-                    message: 'Id richiesto'
-                })
-            }
-            const jobs = await jobService.getByUserID(req.params.userId)
-            res.json({
-                jobs
-            })
-        } catch (error) {
-
-        }
     }
-
 };
