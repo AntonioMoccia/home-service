@@ -5,30 +5,36 @@ import Job from "@v1/services/job.service";
 
 const jobService = new Job();
 const userService = new UserService()
+
 export const jobControllerV1 = {
     create: async (req: Request, res: Response, next: NextFunction) => {
         try {
             if (!req.user || !req.user.userId) {
                 return res.status(400).json({ message: 'Utente non registrato' })
             }
-            const user = await userService.findById(req.user.userId)
-            console.log(req.user.userId);
+            const newJobObj = {
+                ...req.body, //fare il dto
+                worker: req.user.userId
+            }
+
+            // const user = await userService.findById(req.user.userId)
 
             /*       if(user?.role!==UserRole.WORKER){
                       return res.status(400).json({ message:`Per creare un job l'utente deve essere registrato come worker` })
                   }
-       */
-            const newJob = await jobService.create(req.body);
+           */
+
+            const newJob = await jobService.create(newJobObj);
             res.json(newJob)
         } catch (e) {
-
             if (e instanceof Error) return res.status(400).json({ message: e.message })
         }
     },
     getAll: async (req: Request, res: Response, next: NextFunction) => {
-
         const jobs = await jobService.getAll();
-
+        if (Object.keys(req.query).length > 0) {
+            console.log(req.query)
+        }
         res.json({ jobs });
     },
     getByID: async (req: Request, res: Response, next: NextFunction) => {
@@ -64,6 +70,22 @@ export const jobControllerV1 = {
         res.json({
             update
         })
+    },
+    getJobsByUserID: async (req: Request, res: Response) => {
+        try {
+            if (!req.params.userId) {
+                return res.json({
+                    success: false,
+                    message: 'Id richiesto'
+                })
+            }
+            const jobs = await jobService.getByUserID(req.params.userId)
+            res.json({
+                jobs
+            })
+        } catch (error) {
+
+        }
     }
 
 };

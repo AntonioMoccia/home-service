@@ -19,4 +19,19 @@ export const userControllerV1 = {
   getByUsername: (req: Request, res: Response, next: NextFunction) => {
     return userService.findByUsername(req.query.username as string);
   },
+  update: async (req: Request, res: Response, next: NextFunction) => {
+    if(req.user.userId && req.user.userId == req.params.userId){
+      const updatedUser = await userService.update(req.params.userId,req.body)
+      return res.json({
+        status:true,
+        message:'User updated successfully',
+        user:updatedUser
+      })
+    }
+    res.json({
+      status:false,
+      message:'Il tuo id non combacia con quello che stai tentando di modificare'
+    })
+  },
+  
 };

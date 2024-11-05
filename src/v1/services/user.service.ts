@@ -1,5 +1,5 @@
 import dataSource from '@v1/config/db';
-import { User as UserEntity } from '@v1/entities/user.entity'
+import { User as UserEntity, UserRole } from '@v1/entities/user.entity'
 interface userCreateDTO {
   email: string,
   username: string,
@@ -67,6 +67,19 @@ class User {
     const user = await userRepository.findOne({ where: { email } });
 
     return user;
+  }
+  async update(userId:string,userUpdate:Partial<UserEntity>){
+    try {      
+      const updatedUser = await userRepository.update(userId,{
+        ...userUpdate
+      })
+      return updatedUser
+    } catch (error) {
+      if(error instanceof Error){
+        throw new Error(error.message)
+      }
+      throw new Error(`errore sconosciuto in fase di modifca dell'utente`)
+    }
   }
 }
 

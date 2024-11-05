@@ -10,7 +10,7 @@ class Job {
     constructor() { }
 
     async getAll(): Promise<JobEntity[]> {
-        
+
 
         return await jobRepository.find({
             relations: {
@@ -32,9 +32,9 @@ class Job {
         if (!user) {
             throw new Error(`L'utente non esiste nel database`)
         }
-   /*      if (user?.role !== UserRole.WORKER) {
+        if (user?.role !== UserRole.WORKER) {
             throw new Error(`Per creare un job l'utente deve essere un worker`)
-        } */
+        }
 
         const newJob = jobRepository.create(job)
 
@@ -49,20 +49,33 @@ class Job {
         }
     }
 
-    async delete(id_job: string,user_id:string) {
+    async delete(id_job: string, user_id: string) {
         try {
-            const job = await jobRepository.findOne({where:{id_job},relations:{worker:true}})
-            console.log(job?.worker.id,user_id);
-            
-            if(job?.worker.id == user_id){
-                
+            const job = await jobRepository.findOne({ where: { id_job }, relations: { worker: true } })
+            console.log(job?.worker.id, user_id);
+
+            if (job?.worker.id == user_id) {
+
                 return await jobRepository.delete(id_job)
-            }else{
+            } else {
                 throw new Error(`Job non trovato per l'utente ${user_id}`)
             }
-            
+
         } catch (error) {
             throw new Error('Job inesistente')
+        }
+    }
+    async getByUserID(user_id: string) {
+        try {
+            const user = await userRepository.findOne({ where: { id: user_id } })
+            if (user) {
+                const jobs = await jobRepository.findBy({ worker: user })
+                return jobs
+            } else {
+                throw new Error('Questo utente non esiste')
+            }
+        } catch (error) {
+            if (error instanceof Error) throw new Error(error.message)
         }
     }
 

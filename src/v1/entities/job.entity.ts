@@ -10,6 +10,7 @@ class JobEntity {
 
     @ManyToOne(()=>User,(user)=>user.id)
     worker:User
+
     @Column()
     title: string //titolo del job
 
@@ -21,7 +22,7 @@ class JobEntity {
 
     @Column()
     unit: string //unità di prezzo es. ora,pezzo,job,giorno
-
+/**----------------------------------------------------------------------------------------------------------- */
     @Column()
     is_free_quote: boolean //preventivo
 
@@ -33,7 +34,7 @@ class JobEntity {
 
     @Column({ type: 'decimal' })
     deposit_amount: number //prezzo dell'acconto
-
+/**----------------------------------------------------------------------------------------------------------- */
     @CreateDateColumn()
     created_at: Date
 
