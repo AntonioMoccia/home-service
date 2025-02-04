@@ -27,9 +27,8 @@ export const authController = {
   login: async (req: Request, res: Response) => {
     try {
       const { email, password } = req.body;
-
+      
       const user = await userService.findByEmail(email);
-      console.log('login');
 
       if (!user) {
         return res
@@ -44,15 +43,15 @@ export const authController = {
           .status(400)
           .json({ message: "Invalid email or password" });
       }
-
-      const token = jwt.sign({ username: user.username }, process.env.JWT_SECRET as string, {
+      
+      const token = jwt.sign({ userId:user.id}, process.env.JWT_SECRET as string, {
         expiresIn: "1h",
       });
       let returnedUser = {
         email: user.email,
         username: user.username
       };
-
+      req.session.user=user
 
       res.json({ message: "Logged in successfully", user: returnedUser, token });
     } catch (e) {

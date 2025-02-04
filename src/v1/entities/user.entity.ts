@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-export enum UserRule {
+export enum UserRole {
     CUSTOMER='customer',
     WORKER='worker'
 }
@@ -21,9 +21,9 @@ export class User{
     email:string
 
     @Column({type:'enum',
-        enum:UserRule,
-        default:UserRule.CUSTOMER
+        enum:UserRole,
+        default:UserRole.CUSTOMER
     })
-    role:UserRule
+    role:UserRole
 }
 //di default e un customer, nel momento che viene passato a worker ha la possibilita di inserire i servizi e nello stesso momento di essere un customer
